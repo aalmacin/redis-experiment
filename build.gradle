@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'com.raidrin'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'biz.paluch.redis:lettuce:3.2.Final'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task exec(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    main = "RedisExperiment"
+}
