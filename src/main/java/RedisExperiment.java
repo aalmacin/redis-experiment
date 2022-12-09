@@ -25,6 +25,6 @@ public class RedisExperiment {
         redisConnection.del("banana1", "vm1", "vm2", "vm3");
 
         redisConnection.close();
-        redisConnection.shutdown(true);
+        redisClient.shutdown();
     }
 }
