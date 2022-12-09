@@ -13,9 +13,13 @@ public class RedisExperiment {
         RedisURI uri = RedisURI.Builder.redis(host, port).build();
         RedisClient redisClient = new RedisClient(uri);
 
-        RedisConnection<String, String> redisConnection = redisClient.connect();
+//        RedisConnection<String, String> redisConnection = redisClient.connect();
 
-        System.out.println("Connected to redis");
+        RedisConnection<String, String> connection = redisClient.connect();
+        System.out.println("Connected to Redis using SSL");
+
+        connection.close();
+        redisClient.shutdown();
 //
 //        redisConnection.setex("banana1", 300, "100");
 //        redisConnection.setex("vm1", 300, "100");
@@ -30,8 +34,8 @@ public class RedisExperiment {
 //
 //        redisConnection.del("banana1", "vm1", "vm2", "vm3");
 
-        redisConnection.close();
-        redisClient.shutdown();
+//        redisConnection.close();
+//        redisClient.shutdown();
 
         System.out.println("Done");
     }
