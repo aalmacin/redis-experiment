@@ -8,7 +8,7 @@ public class RedisExperiment {
 
     public static void main(String[] args) {
         System.out.println("Start");
-        RedisClient redisClient = new RedisClient(RedisURI.create("redis://10.98.144.67:6379"));
+        RedisClient redisClient = new RedisClient(RedisURI.create("rediss://10.98.144.67:6379"));
 
         RedisConnection<String, String> redisConnection = redisClient.connect();
 
