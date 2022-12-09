@@ -1,6 +1,6 @@
-import com.lambdaworks.redis.RedisClient;
-import com.lambdaworks.redis.RedisConnection;
-import com.lambdaworks.redis.RedisURI;
+import io.lettuce.core.*;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisCommands;
 
 import java.util.List;
 
@@ -10,32 +10,27 @@ public class RedisExperiment {
         System.out.println("Start");
         int port = 6379;
         String host = "10.98.144.67";
-        RedisURI uri = RedisURI.Builder.redis(host, port).build();
-        RedisClient redisClient = new RedisClient(uri);
+        RedisClient redisClient = RedisClient.create(String.format("redis://%s:%d/0", host, port));
 
-//        RedisConnection<String, String> redisConnection = redisClient.connect();
-
-        RedisConnection<String, String> connection = redisClient.connect();
+        StatefulRedisConnection<String, String> redisConnection = redisClient.connect();
+        RedisCommands<String, String> redisCommands = redisConnection.sync();
         System.out.println("Connected to Redis using SSL");
 
-        connection.close();
-        redisClient.shutdown();
-//
-//        redisConnection.setex("banana1", 300, "100");
-//        redisConnection.setex("vm1", 300, "100");
-//        redisConnection.setex("vm2", 300, "58");
-//        redisConnection.setex("vm3", 300, "38");
-//
-//        List<String> keys = redisConnection.keys("vm*");
-//        keys.forEach(k -> {
-//            String s = redisConnection.get(k);
-//            System.out.println("Value: " + s);
-//        });
-//
-//        redisConnection.del("banana1", "vm1", "vm2", "vm3");
+        redisCommands.setex("banana1", 300, "100");
+        redisCommands.setex("vm1", 300, "100");
+        redisCommands.setex("vm2", 300, "58");
+        redisCommands.setex("vm3", 300, "38");
 
-//        redisConnection.close();
-//        redisClient.shutdown();
+        List<String> keys = redisCommands.keys("vm*");
+        keys.forEach(k -> {
+            String s = redisCommands.get(k);
+            System.out.println("Value: " + s);
+        });
+
+        redisCommands.del("banana1", "vm1", "vm2", "vm3");
+
+        redisConnection.close();
+        redisClient.shutdown();
 
         System.out.println("Done");
     }
